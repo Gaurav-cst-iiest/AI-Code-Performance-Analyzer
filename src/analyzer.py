@@ -17,7 +17,8 @@ def analyze_content(content):
     count_redeclared_variables,redeclared_variables=get_redeclared_variables(content)
     calls_function,calls_function_count=find_function_calls(content)
     recursive_functions,recursive_functions_count=find_recursive_functions(content)
-    return line_count, word_count, blank_line_count, character_count,for_loops_count, while_loops_count, if_statements_count,definition_function, functions_count, variables_count, variables,count_datatype,used_datatypes,count_return,return_list,Display_variables,variables_used,variables_unused,count_redeclared_variables,redeclared_variables,calls_function,calls_function_count,recursive_functions,recursive_functions_count
+    max_length=max_function_length(content)
+    return line_count, word_count, blank_line_count, character_count,for_loops_count, while_loops_count, if_statements_count,definition_function, functions_count, variables_count, variables,count_datatype,used_datatypes,count_return,return_list,Display_variables,variables_used,variables_unused,count_redeclared_variables,redeclared_variables,calls_function,calls_function_count,recursive_functions,recursive_functions_count,max_length
 
 def tokenization(content):
     symbols=["{","}","(",")","=",",",";"]
@@ -241,4 +242,40 @@ def find_recursive_functions(content):
                                      break
     count=len(recursive_functions)
     return recursive_functions,count
+
+def max_function_length(content):
+    function_lists,_=count_functions(content)
+    lines=content.split("\n")
+    threshold=30
+    more_length={}
+    datatype=["int","bool","char","string","short","float","long long","void","long","signed","unsigned","double"]
+    for function in function_lists:
+         for i in range(0,len(lines)):
+             if function in lines[i] and "(" in lines[i]:
+              for keyword in datatype:
+                     if keyword in lines[i]:
+                       count=1
+                       brace=0
+                       if "{" in lines[i]:
+                         i+=1
+                       else: 
+                         while i <len(lines) and "{" not in lines[i]:
+                               i+=1
+                         if i==len(lines):
+                             break
+                         for k in range(i,len(lines)):
+                             count+=1
+                             if "{" in lines[k]:
+                                   brace+=1
+                             if "}" in lines[k]:
+                                brace-=1
+                                if brace==0:
+                                    break
+                         if count>threshold:
+                                  more_length[function]=count
+                         break
+              break   
+    return more_length
+    
+
 
