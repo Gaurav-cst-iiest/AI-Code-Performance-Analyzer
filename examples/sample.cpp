@@ -1,64 +1,147 @@
 #include <iostream>
 using namespace std;
 
-int add(int a, int b)
+// Depth = 0
+void test1()
 {
-    return a + b;
+    int a = 10;
 }
 
-void display() {
-    cout << "Hello" << endl;
+// Depth = 1
+void test2()
+{
+    if(a)
+    {
+        cout << "Hello";
+    }
 }
 
-int factorial(int n)
+// Depth = 2
+void test3()
 {
-    if (n <= 1)
-        return 1;
-    return n * factorial(n - 1);
+    if(a)
+    {
+        while(b)
+        {
+            cout << "Hi";
+        }
+    }
 }
 
-void longFunction()
+// Depth = 3
+void test4()
 {
-    int a = 0;
-    a++;
-    a++;
-    a++;
-    a++;
-    a++;
-    a++;
-    a++;
-    a++;
-    a++;
-    a++;
-    a++;
-    a++;
-    a++;
-    a++;
-    a++;
-    a++;
-    a++;
-    a++;
-    a++;
-    a++;
-    a++;
-    a++;
-    a++;
-    a++;
-    a++;
-    a++;
-    a++;
-    a++;
-    a++;
-    a++;
-    a++;
-    cout << a << endl;
+    if(a)
+    {
+        while(b)
+        {
+            for(int i=0;i<10;i++)
+            {
+                cout << i;
+            }
+        }
+    }
+}
+
+// Depth = 4
+void test5()
+{
+    if(a)
+    {
+        while(b)
+        {
+            for(int i=0;i<10;i++)
+            {
+                if(c)
+                {
+                    cout << i;
+                }
+            }
+        }
+    }
+}
+
+// Sequential blocks (Maximum depth = 2)
+void test6()
+{
+    if(a)
+    {
+        while(b)
+        {
+
+        }
+
+        for(int i=0;i<10;i++)
+        {
+
+        }
+    }
+}
+
+// Separate blocks (Maximum depth = 1)
+void test7()
+{
+    if(a)
+    {
+
+    }
+
+    while(b)
+    {
+
+    }
+
+    for(int i=0;i<10;i++)
+    {
+
+    }
+}
+
+// Brace on same line (Maximum depth = 3)
+void test8()
+{
+    if(a) {
+        while(b) {
+            for(int i=0;i<10;i++) {
+                cout<<i;
+            }
+        }
+    }
+}
+
+// Mixed formatting (Maximum depth = 3)
+void test9()
+{
+    if(a)
+
+    {
+        while(b)
+
+        {
+            if(c)
+
+            {
+                cout<<"Nested";
+            }
+        }
+    }
+}
+
+// Anonymous scope (Maximum depth should remain 1)
+void test10()
+{
+    if(a)
+    {
+        {
+            int x = 10;
+            int y = 20;
+        }
+
+        cout << "Done";
+    }
 }
 
 int main()
 {
-    cout << add(5, 6) << endl;
-    display();
-    cout << factorial(5) << endl;
-    longFunction();
     return 0;
 }

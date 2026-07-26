@@ -18,7 +18,8 @@ def analyze_content(content):
     calls_function,calls_function_count=find_function_calls(content)
     recursive_functions,recursive_functions_count=find_recursive_functions(content)
     max_length=max_function_length(content)
-    return line_count, word_count, blank_line_count, character_count,for_loops_count, while_loops_count, if_statements_count,definition_function, functions_count, variables_count, variables,count_datatype,used_datatypes,count_return,return_list,Display_variables,variables_used,variables_unused,count_redeclared_variables,redeclared_variables,calls_function,calls_function_count,recursive_functions,recursive_functions_count,max_length
+    nested_list=find_nested_loop(content)
+    return line_count, word_count, blank_line_count, character_count,for_loops_count, while_loops_count, if_statements_count,definition_function, functions_count, variables_count, variables,count_datatype,used_datatypes,count_return,return_list,Display_variables,variables_used,variables_unused,count_redeclared_variables,redeclared_variables,calls_function,calls_function_count,recursive_functions,recursive_functions_count,max_length,nested_list
 
 def tokenization(content):
     symbols=["{","}","(",")","=",",",";"]
@@ -276,6 +277,35 @@ def max_function_length(content):
                          break
               break   
     return more_length
-    
 
-
+def find_nested_loop(content):
+    function_list, _ = count_functions(content)
+    lines = content.split("\n")
+    control_keywords = ["for", "while", "if", "switch"]
+    nested_list = {}
+    for function in function_list:
+        for i in range(len(lines)):
+            if function in lines[i]:
+                while i < len(lines) and "{" not in lines[i]:
+                    i += 1
+                brace = 1
+                depth = 0
+                max_depth = 0
+                for k in range(i + 1, len(lines)):
+                    line = lines[k]
+                    if any(keyword in line for keyword in control_keywords):
+                        j = k
+                        while j < len(lines) and "{" not in lines[j]:
+                            j += 1
+                        if j < len(lines):
+                            brace += 1
+                            depth += 1
+                            max_depth = max(max_depth, depth)
+                    if "}" in line:
+                        brace -= 1
+                        if depth > 0:
+                            depth -= 1
+                        if brace == 0:
+                            break
+                nested_list[function] = max_depth
+    return nested_list

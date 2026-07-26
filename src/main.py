@@ -1,7 +1,7 @@
 import reader
 import analyzer
 content=reader.read_file()
-line_count, word_count, blank_line_count, character_count, for_loops_count, while_loops_count, if_statements_count, definition_function,functions_count , variables_count, variables, count_datatype, used_datatypes,count_return,return_list,Display_variables,variables_used,variables_unused,count_redeclared_variables,redeclared_variables,calls_function,calls_function_count,recursive_functions,recursive_functions_count,max_length= analyzer.analyze_content(content)
+line_count, word_count, blank_line_count, character_count, for_loops_count, while_loops_count, if_statements_count, definition_function,functions_count , variables_count, variables, count_datatype, used_datatypes,count_return,return_list,Display_variables,variables_used,variables_unused,count_redeclared_variables,redeclared_variables,calls_function,calls_function_count,recursive_functions,recursive_functions_count,max_length,nested_list= analyzer.analyze_content(content)
 print("\n-----content of the file-----\n",content)
 print("\n--------Analysis report--------\n",)
 print("Total number of lines:   \n", line_count)
@@ -29,6 +29,7 @@ print("Number of function calls \n", calls_function_count)
 print("number of the recursive function \n",recursive_functions_count)
 print("list of the recursive function \n",recursive_functions)
 print("cross the threshhold value \n",max_length)
+print("Nested loop of the list",nested_list)
 
 print("\n-------------------------------\n")
 
