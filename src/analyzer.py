@@ -19,7 +19,8 @@ def analyze_content(content):
     recursive_functions,recursive_functions_count=find_recursive_functions(content)
     max_length=max_function_length(content)
     nested_list=find_nested_loop(content)
-    return line_count, word_count, blank_line_count, character_count,for_loops_count, while_loops_count, if_statements_count,definition_function, functions_count, variables_count, variables,count_datatype,used_datatypes,count_return,return_list,Display_variables,variables_used,variables_unused,count_redeclared_variables,redeclared_variables,calls_function,calls_function_count,recursive_functions,recursive_functions_count,max_length,nested_list
+    magic_number=find_magic_number(content)
+    return line_count, word_count, blank_line_count, character_count,for_loops_count, while_loops_count, if_statements_count,definition_function, functions_count, variables_count, variables,count_datatype,used_datatypes,count_return,return_list,Display_variables,variables_used,variables_unused,count_redeclared_variables,redeclared_variables,calls_function,calls_function_count,recursive_functions,recursive_functions_count,max_length,nested_list,magic_number
 
 def tokenization(content):
     symbols=["{","}","(",")","=",",",";"]
@@ -279,33 +280,68 @@ def max_function_length(content):
     return more_length
 
 def find_nested_loop(content):
-    function_list, _ = count_functions(content)
     lines = content.split("\n")
-    control_keywords = ["for", "while", "if", "switch"]
-    nested_list = {}
-    for function in function_list:
-        for i in range(len(lines)):
-            if function in lines[i]:
-                while i < len(lines) and "{" not in lines[i]:
+    control_keyword = ["if", "for", "while", "switch"]
+    nested_depth = {}
+    datatypes = ["int", "float", "double", "char", "void", "bool", "long", "short"]
+    for i in range(len(lines)):
+        line = lines[i].strip()
+        is_function = False
+        function_name = ""
+        if "(" in line and ")" in line:
+            words = line.replace("(", " ").split()
+            if len(words) >= 2:
+                if words[0] in datatypes:
+                    function_name = words[1]
+                    is_function = True
+        if not is_function:
+            continue
+        start = i
+        while start < len(lines):
+            if "{" in lines[start]:
+                break
+            start += 1
+        brace = 1
+        current_depth = 0
+        max_depth = 0
+        k = start + 1
+        while k < len(lines) and brace > 0:
+            current_line = lines[k].strip()
+            for control in control_keyword:
+                if current_line.startswith(control):
+                    current_depth += 1
+                    if current_depth > max_depth:
+                        max_depth = current_depth
+                    break
+            for ch in current_line:
+                if ch == "{":
+                    brace += 1
+                elif ch == "}":
+                    brace -= 1
+                    if current_depth > 0:
+                        current_depth -= 1
+            k += 1
+        nested_depth[function_name] = max_depth
+    return nested_depth
+
+def find_magic_number(content):
+    magic_number = []
+    ignore_value = ["0", "1", "-1"]
+    lines = content.split("\n")
+    for line in lines:
+        line = line.strip()
+        if ("const" in line) or ("constexpr" in line) or ("#define" in line):
+            continue
+        i = 0
+        while i < len(line):
+            if line[i].isdigit():
+                number = ""
+                while i < len(line) and (line[i].isdigit() or line[i] == "."):
+                    number += line[i]
                     i += 1
-                brace = 1
-                depth = 0
-                max_depth = 0
-                for k in range(i + 1, len(lines)):
-                    line = lines[k]
-                    if any(keyword in line for keyword in control_keywords):
-                        j = k
-                        while j < len(lines) and "{" not in lines[j]:
-                            j += 1
-                        if j < len(lines):
-                            brace += 1
-                            depth += 1
-                            max_depth = max(max_depth, depth)
-                    if "}" in line:
-                        brace -= 1
-                        if depth > 0:
-                            depth -= 1
-                        if brace == 0:
-                            break
-                nested_list[function] = max_depth
-    return nested_list
+                if number not in ignore_value:
+                    if number not in magic_number:
+                        magic_number.append(number)
+            else:
+                i += 1
+    return magic_number

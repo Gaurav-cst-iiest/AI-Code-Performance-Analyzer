@@ -1,147 +1,86 @@
-#include <iostream>
+#include<iostream>
 using namespace std;
 
-// Depth = 0
-void test1()
+const int MAX = 100;
+
+int square(int x)
 {
-    int a = 10;
+    return x * x;
 }
 
-// Depth = 1
-void test2()
+int cube(int x)
 {
-    if(a)
+    int result = x * x * x;
+    return result;
+}
+
+void helper()
+{
+    cout << "Helper Function";
+}
+
+void recursive(int n)
+{
+    if(n > 0)
     {
-        cout << "Hello";
+        recursive(n - 1);
     }
 }
 
-// Depth = 2
-void test3()
+void calculate(int a, int b)
 {
-    if(a)
-    {
-        while(b)
-        {
-            cout << "Hi";
-        }
-    }
-}
+    int sum = a + b;
+    int unused = 50;
 
-// Depth = 3
-void test4()
-{
-    if(a)
+    if(sum > 10)
     {
-        while(b)
+        while(sum < 100)
         {
-            for(int i=0;i<10;i++)
+            for(int i = 0; i < 5; i++)
             {
-                cout << i;
-            }
-        }
-    }
-}
-
-// Depth = 4
-void test5()
-{
-    if(a)
-    {
-        while(b)
-        {
-            for(int i=0;i<10;i++)
-            {
-                if(c)
+                if(i == 2)
                 {
-                    cout << i;
+                    helper();
                 }
             }
+
+            sum = sum + 20;
         }
     }
+
+    square(sum);
+    cube(sum);
 }
 
-// Sequential blocks (Maximum depth = 2)
-void test6()
+void testMagic()
 {
-    if(a)
+    int age = 18;
+    int marks = 95;
+    int arr[200];
+
+    if(age > 60)
     {
-        while(b)
-        {
-
-        }
-
-        for(int i=0;i<10;i++)
-        {
-
-        }
-    }
-}
-
-// Separate blocks (Maximum depth = 1)
-void test7()
-{
-    if(a)
-    {
-
+        age = 25;
     }
 
-    while(b)
-    {
+    float pi = 3.14;
+    double e = 2.718;
 
-    }
+    int size = 100;
 
-    for(int i=0;i<10;i++)
-    {
-
-    }
-}
-
-// Brace on same line (Maximum depth = 3)
-void test8()
-{
-    if(a) {
-        while(b) {
-            for(int i=0;i<10;i++) {
-                cout<<i;
-            }
-        }
-    }
-}
-
-// Mixed formatting (Maximum depth = 3)
-void test9()
-{
-    if(a)
-
-    {
-        while(b)
-
-        {
-            if(c)
-
-            {
-                cout<<"Nested";
-            }
-        }
-    }
-}
-
-// Anonymous scope (Maximum depth should remain 1)
-void test10()
-{
-    if(a)
-    {
-        {
-            int x = 10;
-            int y = 20;
-        }
-
-        cout << "Done";
-    }
+    return;
 }
 
 int main()
 {
+    int value = 10;
+    int value2 = value;
+
+    calculate(value, value2);
+
+    recursive(5);
+
+    helper();
+
     return 0;
 }
