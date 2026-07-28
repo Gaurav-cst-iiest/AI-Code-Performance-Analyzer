@@ -18,9 +18,9 @@ def analyze_content(content):
     calls_function,calls_function_count=find_function_calls(content)
     recursive_functions,recursive_functions_count=find_recursive_functions(content)
     max_length=max_function_length(content)
-    nested_list=find_nested_loop(content)
+    nested_list,cyclomatic_result=find_nested_loop(content)
     magic_number=find_magic_number(content)
-    return line_count, word_count, blank_line_count, character_count,for_loops_count, while_loops_count, if_statements_count,definition_function, functions_count, variables_count, variables,count_datatype,used_datatypes,count_return,return_list,Display_variables,variables_used,variables_unused,count_redeclared_variables,redeclared_variables,calls_function,calls_function_count,recursive_functions,recursive_functions_count,max_length,nested_list,magic_number
+    return line_count, word_count, blank_line_count, character_count,for_loops_count, while_loops_count, if_statements_count,definition_function, functions_count, variables_count, variables,count_datatype,used_datatypes,count_return,return_list,Display_variables,variables_used,variables_unused,count_redeclared_variables,redeclared_variables,calls_function,calls_function_count,recursive_functions,recursive_functions_count,max_length,nested_list,cyclomatic_result,magic_number
 
 def tokenization(content):
     symbols=["{","}","(",")","=",",",";"]
@@ -283,6 +283,7 @@ def find_nested_loop(content):
     lines = content.split("\n")
     control_keyword = ["if", "for", "while", "switch"]
     nested_depth = {}
+    cyclomatic_result={}
     datatypes = ["int", "float", "double", "char", "void", "bool", "long", "short"]
     for i in range(len(lines)):
         line = lines[i].strip()
@@ -305,6 +306,7 @@ def find_nested_loop(content):
         current_depth = 0
         max_depth = 0
         k = start + 1
+        cyclomatic=1
         while k < len(lines) and brace > 0:
             current_line = lines[k].strip()
             for control in control_keyword:
@@ -313,6 +315,16 @@ def find_nested_loop(content):
                     if current_depth > max_depth:
                         max_depth = current_depth
                     break
+            if current_line.startswith("else if"):
+                    cyclomatic+=1
+            elif current_line.startswith("if"):
+                    cyclomatic+=1
+            elif current_line.startswith("for"):
+                    cyclomatic+=1
+            elif current_line.startswith("while"):
+                    cyclomatic+=1
+            elif current_line.startswith("switch"):
+                    cyclomatic+=1
             for ch in current_line:
                 if ch == "{":
                     brace += 1
@@ -322,7 +334,8 @@ def find_nested_loop(content):
                         current_depth -= 1
             k += 1
         nested_depth[function_name] = max_depth
-    return nested_depth
+        cyclomatic_result[function_name]=cyclomatic
+    return nested_depth,cyclomatic_result
 
 def find_magic_number(content):
     magic_number = []
@@ -345,3 +358,6 @@ def find_magic_number(content):
             else:
                 i += 1
     return magic_number
+
+
+                

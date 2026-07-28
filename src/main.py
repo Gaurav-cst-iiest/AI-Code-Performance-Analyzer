@@ -1,7 +1,7 @@
 import reader
 import analyzer
 content=reader.read_file()
-line_count, word_count, blank_line_count, character_count, for_loops_count, while_loops_count, if_statements_count, definition_function,functions_count , variables_count, variables, count_datatype, used_datatypes,count_return,return_list,Display_variables,variables_used,variables_unused,count_redeclared_variables,redeclared_variables,calls_function,calls_function_count,recursive_functions,recursive_functions_count,max_length,nested_list,magic_number= analyzer.analyze_content(content)
+line_count, word_count, blank_line_count, character_count, for_loops_count, while_loops_count, if_statements_count, definition_function,functions_count , variables_count, variables, count_datatype, used_datatypes,count_return,return_list,Display_variables,variables_used,variables_unused,count_redeclared_variables,redeclared_variables,calls_function,calls_function_count,recursive_functions,recursive_functions_count,max_length,nested_list,cyclomatic_result,magic_number= analyzer.analyze_content(content)
 print("\n-----content of the file-----\n",content)
 print("\n--------Analysis report--------\n",)
 print("\n Total number of lines:   ", line_count)
@@ -30,6 +30,7 @@ print("\n number of the recursive function ",recursive_functions_count)
 print("\n list of the recursive function ",recursive_functions)
 print("\n cross the threshhold value ",max_length)
 print("\n Nested loop of the list  ",nested_list)
+print("\n cyclomatic complexity",cyclomatic_result)
 print(" \n Magic Numbers (Hard-coded integer literals):  ",magic_number)
 
 print("\n-------------------------------\n")

@@ -1,7 +1,5 @@
-#include<iostream>
+#include <iostream>
 using namespace std;
-
-const int MAX = 100;
 
 int square(int x)
 {
@@ -10,77 +8,105 @@ int square(int x)
 
 int cube(int x)
 {
-    int result = x * x * x;
-    return result;
+    return x * x * x;
 }
 
 void helper()
 {
-    cout << "Helper Function";
+    cout << "Helper Function\n";
 }
 
-void recursive(int n)
+int recursive(int n)
+{
+    if(n <= 1)
+    {
+        return 1;
+    }
+    return n * recursive(n - 1);
+}
+
+void calculate(int n)
 {
     if(n > 0)
     {
-        recursive(n - 1);
-    }
-}
-
-void calculate(int a, int b)
-{
-    int sum = a + b;
-    int unused = 50;
-
-    if(sum > 10)
-    {
-        while(sum < 100)
+        for(int i = 0; i < n; i++)
         {
-            for(int i = 0; i < 5; i++)
+            while(i < 3)
             {
-                if(i == 2)
+                if(i == 1)
                 {
-                    helper();
+                    cout << i << endl;
                 }
+                i++;
             }
-
-            sum = sum + 20;
         }
     }
+    else if(n == 0)
+    {
+        cout << "Zero\n";
+    }
+    else
+    {
+        switch(n)
+        {
+            case -1:
+                cout << "-1\n";
+                break;
 
-    square(sum);
-    cube(sum);
+            case -2:
+                cout << "-2\n";
+                break;
+
+            default:
+                cout << "Other\n";
+        }
+    }
 }
 
-void testMagic()
+void nested()
 {
-    int age = 18;
-    int marks = 95;
-    int arr[200];
-
-    if(age > 60)
+    if(true)
     {
-        age = 25;
+        for(int i = 0; i < 5; i++)
+        {
+            while(i < 2)
+            {
+                if(i == 1)
+                {
+                    switch(i)
+                    {
+                        case 1:
+                            cout << "One\n";
+                            break;
+                    }
+                }
+                i++;
+            }
+        }
     }
+}
 
-    float pi = 3.14;
-    double e = 2.718;
-
-    int size = 100;
-
-    return;
+void noDecision()
+{
+    int a = 10;
+    int b = 20;
+    int c = a + b;
+    cout << c << endl;
 }
 
 int main()
 {
-    int value = 10;
-    int value2 = value;
-
-    calculate(value, value2);
-
+    helper();
+    square(5);
+    cube(4);
     recursive(5);
 
-    helper();
+    calculate(5);
+    calculate(0);
+    calculate(-1);
+
+    nested();
+    noDecision();
 
     return 0;
 }
