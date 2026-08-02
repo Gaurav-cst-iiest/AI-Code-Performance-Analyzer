@@ -20,7 +20,9 @@ def analyze_content(content):
     max_length=max_function_length(content)
     nested_list,cyclomatic_result=find_nested_loop(content)
     magic_number=find_magic_number(content)
-    return line_count, word_count, blank_line_count, character_count,for_loops_count, while_loops_count, if_statements_count,definition_function, functions_count, variables_count, variables,count_datatype,used_datatypes,count_return,return_list,Display_variables,variables_used,variables_unused,count_redeclared_variables,redeclared_variables,calls_function,calls_function_count,recursive_functions,recursive_functions_count,max_length,nested_list,cyclomatic_result,magic_number
+    long_function=find_long_function(content)
+    global_variables=find_global_variables(content)
+    return line_count, word_count, blank_line_count, character_count,for_loops_count, while_loops_count, if_statements_count,definition_function, functions_count, variables_count, variables,count_datatype,used_datatypes,count_return,return_list,Display_variables,variables_used,variables_unused,count_redeclared_variables,redeclared_variables,calls_function,calls_function_count,recursive_functions,recursive_functions_count,max_length,nested_list,cyclomatic_result,magic_number,long_function,global_variables
 
 def tokenization(content):
     symbols=["{","}","(",")","=",",",";"]
@@ -172,7 +174,6 @@ def find_used_variables(content,variables):
         if words[i-1] not in datatypes:
             if words[i] in variables:
                 if words[i] not in used_variables:
-                      print("Previous token:", words[i-1], "Current token:", words[i])
                       used_variables.append(words[i])
     return used_variables
 
@@ -265,14 +266,29 @@ def max_function_length(content):
                                i+=1
                          if i==len(lines):
                              break
-                         for k in range(i,len(lines)):
-                             count+=1
-                             if "{" in lines[k]:
-                                   brace+=1
-                             if "}" in lines[k]:
-                                brace-=1
-                                if brace==0:
-                                    break
+                         inside_comment = False
+                         for k in range(i, len(lines)):
+                              current_line = lines[k].strip()
+                              if inside_comment:
+                                  if "*/" in current_line:
+                                     inside_comment = False
+                                  continue
+                              if current_line.startswith("/*"):
+                                   if "*/" not in current_line:
+                                         inside_comment = True
+                                   continue
+                              if current_line != "" \
+                                    and current_line != "{" \
+                                    and current_line != "}" \
+                                    and not current_line.startswith("//"):
+                                        count += 1
+                              for ch in current_line:
+                                    if ch == "{":
+                                        brace += 1
+                                    elif ch == "}":
+                                        brace -= 1
+                              if brace == 0:
+                                        break
                          if count>threshold:
                                   more_length[function]=count
                          break
@@ -358,6 +374,96 @@ def find_magic_number(content):
             else:
                 i += 1
     return magic_number
+
+def find_long_function(content):
+    lines = content.split("\n")
+    datatypes = ["int", "float", "double", "char", "void",
+                 "bool", "long", "short"]
+    THRESHOLD = 30
+    long_functions = {}
+    inside_comment = False
+    for i in range(len(lines)):
+        line = lines[i].strip()
+        is_function = False
+        function_name = ""
+        if "(" in line and ")" in line:
+            words = line.replace("(", " ").split()
+            if len(words) >= 2:
+                if words[0] in datatypes:
+                    function_name = words[1]
+                    is_function = True
+        if not is_function:
+            continue
+        start = i
+        while start < len(lines):
+            if "{" in lines[start]:
+                break
+            start += 1
+        brace = 1
+        count = 0
+        k = start + 1
+        while k < len(lines) and brace > 0:
+            current_line = lines[k].strip()
+            if inside_comment:
+                if "*/" in current_line:
+                    inside_comment = False
+                k += 1
+                continue
+            if current_line.startswith("/*"):
+                if "*/" not in current_line:
+                    inside_comment = True
+                k += 1
+                continue
+            if current_line == "":
+                pass
+            elif current_line.startswith("//"):
+                pass
+            elif current_line == "{":
+                pass
+            elif current_line == "}":
+                pass
+            else:
+                count += 1
+            for ch in current_line:
+                if ch == "{":
+                    brace += 1
+                elif ch == "}":
+                    brace -= 1
+            k += 1
+        if count > THRESHOLD:
+            long_functions[function_name] = count
+    return long_functions
+
+def find_global_variables(content):
+    lines = content.split("\n")
+    datatype = [
+        "int", "float", "double", "char", "bool",
+        "long", "short", "void", "string",
+        "signed", "unsigned"  ]
+    global_variables = []
+    brace = 0
+    for line in lines:
+        current_line = line.strip()
+        for ch in current_line:
+            if ch == "{":
+                brace += 1
+            elif ch == "}":
+                brace -= 1
+        if brace == 0:
+            for data in datatype:
+                if current_line.startswith(data):
+                    if "(" in current_line and ")" in current_line:
+                        break
+                    temp = current_line.replace(",", " ")
+                    temp = temp.replace("=", " ")
+                    temp = temp.replace(";", " ")
+                    words = temp.split()
+                    if len(words) >= 2:
+                      variable = words[1]
+                      if variable not in global_variables:
+                         global_variables.append(variable)
+                    break
+    return global_variables
 
 
                 
