@@ -22,7 +22,8 @@ def analyze_content(content):
     magic_number=find_magic_number(content)
     long_function=find_long_function(content)
     global_variables=find_global_variables(content)
-    return line_count, word_count, blank_line_count, character_count,for_loops_count, while_loops_count, if_statements_count,definition_function, functions_count, variables_count, variables,count_datatype,used_datatypes,count_return,return_list,Display_variables,variables_used,variables_unused,count_redeclared_variables,redeclared_variables,calls_function,calls_function_count,recursive_functions,recursive_functions_count,max_length,nested_list,cyclomatic_result,magic_number,long_function,global_variables
+    singleline_comments,multilines_comments,total_comments=find_comments(content)
+    return line_count, word_count, blank_line_count, character_count,for_loops_count, while_loops_count, if_statements_count,definition_function, functions_count, variables_count, variables,count_datatype,used_datatypes,count_return,return_list,Display_variables,variables_used,variables_unused,count_redeclared_variables,redeclared_variables,calls_function,calls_function_count,recursive_functions,recursive_functions_count,max_length,nested_list,cyclomatic_result,magic_number,long_function,global_variables,singleline_comments,multilines_comments,total_comments
 
 def tokenization(content):
     symbols=["{","}","(",")","=",",",";"]
@@ -465,5 +466,29 @@ def find_global_variables(content):
                     break
     return global_variables
 
+def find_comments(content):
+    lines = content.split("\n")
+    single_line_comment = 0
+    multi_line_comment = 0
+    total_comment_line = 0
+    inside_comment = False
+    for line in lines:
+        current_line = line.strip()
+        if inside_comment:
+            total_comment_line += 1
+            if "*/" in current_line:
+                inside_comment = False
+                multi_line_comment += 1
+            continue
+        if current_line.startswith("//"):
+            single_line_comment += 1
+            total_comment_line += 1
+        elif current_line.startswith("/*"):
+            total_comment_line += 1
+            if "*/" in current_line:
+                multi_line_comment += 1
+            else:
+                inside_comment = True
+    return single_line_comment, multi_line_comment, total_comment_line
 
                 

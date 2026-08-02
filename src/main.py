@@ -1,7 +1,7 @@
 import reader
 import analyzer
 content=reader.read_file()
-line_count, word_count, blank_line_count, character_count, for_loops_count, while_loops_count, if_statements_count, definition_function,functions_count , variables_count, variables, count_datatype, used_datatypes,count_return,return_list,Display_variables,variables_used,variables_unused,count_redeclared_variables,redeclared_variables,calls_function,calls_function_count,recursive_functions,recursive_functions_count,max_length,nested_list,cyclomatic_result,magic_number,long_function,global_variables= analyzer.analyze_content(content)
+line_count, word_count, blank_line_count, character_count, for_loops_count, while_loops_count, if_statements_count, definition_function,functions_count , variables_count, variables, count_datatype, used_datatypes,count_return,return_list,Display_variables,variables_used,variables_unused,count_redeclared_variables,redeclared_variables,calls_function,calls_function_count,recursive_functions,recursive_functions_count,max_length,nested_list,cyclomatic_result,magic_number,long_function,global_variables,singlelines_comments,multilines_comments,total_comments= analyzer.analyze_content(content)
 print("\n-----content of the file-----\n",content)
 print("\n--------Analysis report--------\n",)
 print("\n Total number of lines:   ", line_count)
@@ -34,6 +34,9 @@ print("\n cyclomatic complexity",cyclomatic_result)
 print(" \n Magic Numbers (Hard-coded integer literals):  ",magic_number)
 print("\n long function :",long_function)
 print("\n Gloobal variables:",global_variables)
+print("\n single_lines_comments :",singlelines_comments)
+print("\n multi_lines_comments :",multilines_comments)
+print("\n total_comments :",total_comments)
 
 print("\n-------------------------------\n")
 

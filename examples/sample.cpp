@@ -1,23 +1,26 @@
 #include<iostream>
 using namespace std;
 
-int x = 10;
-float y = 5.5;
-char ch = 'A';
-bool flag = true;
+// First Comment
 
-void add()
-{
-    int a = 10;
-}
+/* Multi
+   Line
+   Comment */
 
-void display()
-{
-    float b = 20;
-}
+int x=10;
+
+/* Single Line Block */
 
 int main()
 {
-    int c = 30;
+    // Inside Main
+
+    int a=10;
+
+    /*
+      Another
+      Comment
+    */
+
     return 0;
 }
