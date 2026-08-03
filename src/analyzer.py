@@ -24,7 +24,8 @@ def analyze_content(content):
     global_variables=find_global_variables(content)
     singleline_comments,multilines_comments,total_comments=find_comments(content)
     header_files=find_header(content)
-    return line_count, word_count, blank_line_count, character_count,for_loops_count, while_loops_count, if_statements_count,definition_function, functions_count, variables_count, variables,count_datatype,used_datatypes,count_return,return_list,Display_variables,variables_used,variables_unused,count_redeclared_variables,redeclared_variables,calls_function,calls_function_count,recursive_functions,recursive_functions_count,max_length,nested_list,cyclomatic_result,magic_number,long_function,global_variables,singleline_comments,multilines_comments,total_comments,header_files
+    duplicate_list=find_duplicate_code(content)
+    return line_count, word_count, blank_line_count, character_count,for_loops_count, while_loops_count, if_statements_count,definition_function, functions_count, variables_count, variables,count_datatype,used_datatypes,count_return,return_list,Display_variables,variables_used,variables_unused,count_redeclared_variables,redeclared_variables,calls_function,calls_function_count,recursive_functions,recursive_functions_count,max_length,nested_list,cyclomatic_result,magic_number,long_function,global_variables,singleline_comments,multilines_comments,total_comments,header_files,duplicate_list
 
 def tokenization(content):
     symbols=["{","}","(",")","=",",",";"]
@@ -509,6 +510,40 @@ def find_header(content):
                 header=current_line[start+1:end]
                 header_files.append(header)
     return header_files
+
+def find_duplicate_code(content):
+    lines = content.split("\n")
+    duplicate = {}
+    duplicate_list = []
+    inside_comment = False
+    for line in lines:
+        current_line = line.strip()
+        if inside_comment:
+            if "*/" in current_line:
+                inside_comment = False
+            continue
+        if current_line.startswith("/*"):
+            if "*/" not in current_line:
+                inside_comment = True
+            continue
+        if current_line == "":
+            continue
+        if current_line.startswith("//"):
+            continue
+        if current_line == "{":
+            continue
+        if current_line == "}":
+            continue
+        if current_line.startswith("#"):
+            continue
+        if current_line in duplicate:
+            duplicate[current_line] += 1
+        else:
+            duplicate[current_line] = 1
+    for statement in duplicate:
+        if duplicate[statement] > 1:
+            duplicate_list.append(statement)
+    return duplicate_list
 
      
                 
