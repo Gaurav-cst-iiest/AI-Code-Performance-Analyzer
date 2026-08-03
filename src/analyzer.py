@@ -25,7 +25,8 @@ def analyze_content(content):
     singleline_comments,multilines_comments,total_comments=find_comments(content)
     header_files=find_header(content)
     duplicate_list=find_duplicate_code(content)
-    return line_count, word_count, blank_line_count, character_count,for_loops_count, while_loops_count, if_statements_count,definition_function, functions_count, variables_count, variables,count_datatype,used_datatypes,count_return,return_list,Display_variables,variables_used,variables_unused,count_redeclared_variables,redeclared_variables,calls_function,calls_function_count,recursive_functions,recursive_functions_count,max_length,nested_list,cyclomatic_result,magic_number,long_function,global_variables,singleline_comments,multilines_comments,total_comments,header_files,duplicate_list
+    score,rating,suggestion=code_quality_score(variables_unused, magic_number, duplicate_list,long_function,cyclomatic_result)
+    return line_count, word_count, blank_line_count, character_count,for_loops_count, while_loops_count, if_statements_count,definition_function, functions_count, variables_count, variables,count_datatype,used_datatypes,count_return,return_list,Display_variables,variables_used,variables_unused,count_redeclared_variables,redeclared_variables,calls_function,calls_function_count,recursive_functions,recursive_functions_count,max_length,nested_list,cyclomatic_result,magic_number,long_function,global_variables,singleline_comments,multilines_comments,total_comments,header_files,duplicate_list,score,rating,suggestion
 
 def tokenization(content):
     symbols=["{","}","(",")","=",",",";"]
@@ -545,5 +546,39 @@ def find_duplicate_code(content):
             duplicate_list.append(statement)
     return duplicate_list
 
+def code_quality_score(unused_variables,
+                       magic_numbers,
+                       duplicate_code,
+                       long_function,
+                       cyclomatic):
+    score = 100
+    suggestion = []
+    score -= len(unused_variables) * 2
+    if len(unused_variables) > 0:
+        suggestion.append("Remove unused variables.")
+    score -= len(magic_numbers)
+    if len(magic_numbers) > 0:
+        suggestion.append("Replace magic numbers with constants.")
+    score -= len(duplicate_code) * 2
+    if len(duplicate_code) > 0:
+        suggestion.append("Remove duplicate code.")
+    score -= len(long_function) * 5
+    if len(long_function) > 0:
+        suggestion.append("Split long functions.")
+    for function in cyclomatic:
+        if cyclomatic[function] > 10:
+            score -= 5
+            suggestion.append("Reduce cyclomatic complexity in " + function)
+    if score < 0:
+        score = 0
+    if score >= 90:
+        rating = "Excellent"
+    elif score >= 75:
+        rating = "Good"
+    elif score >= 60:
+        rating = "Average"
+    else:
+        rating = "Poor"
+    return score, rating, suggestion
      
                 
