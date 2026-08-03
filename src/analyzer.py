@@ -23,7 +23,8 @@ def analyze_content(content):
     long_function=find_long_function(content)
     global_variables=find_global_variables(content)
     singleline_comments,multilines_comments,total_comments=find_comments(content)
-    return line_count, word_count, blank_line_count, character_count,for_loops_count, while_loops_count, if_statements_count,definition_function, functions_count, variables_count, variables,count_datatype,used_datatypes,count_return,return_list,Display_variables,variables_used,variables_unused,count_redeclared_variables,redeclared_variables,calls_function,calls_function_count,recursive_functions,recursive_functions_count,max_length,nested_list,cyclomatic_result,magic_number,long_function,global_variables,singleline_comments,multilines_comments,total_comments
+    header_files=find_header(content)
+    return line_count, word_count, blank_line_count, character_count,for_loops_count, while_loops_count, if_statements_count,definition_function, functions_count, variables_count, variables,count_datatype,used_datatypes,count_return,return_list,Display_variables,variables_used,variables_unused,count_redeclared_variables,redeclared_variables,calls_function,calls_function_count,recursive_functions,recursive_functions_count,max_length,nested_list,cyclomatic_result,magic_number,long_function,global_variables,singleline_comments,multilines_comments,total_comments,header_files
 
 def tokenization(content):
     symbols=["{","}","(",")","=",",",";"]
@@ -491,4 +492,23 @@ def find_comments(content):
                 inside_comment = True
     return single_line_comment, multi_line_comment, total_comment_line
 
+def find_header(content):
+    lines=content.split("\n")
+    header_files=[]
+    for line in lines:
+        current_line=line.strip()
+        if current_line.startswith("#include"):
+            if "<"in current_line and ">" in current_line:
+                start=current_line.find("<")
+                end=current_line.find(">")
+                header=current_line[start+1:end]
+                header_files.append(header)
+            elif '"' in current_line:
+                start=current_line.find('"')
+                end=current_line.find('"')
+                header=current_line[start+1:end]
+                header_files.append(header)
+    return header_files
+
+     
                 
