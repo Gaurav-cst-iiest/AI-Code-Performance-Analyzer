@@ -1,7 +1,9 @@
 import reader
 import analyzer
+import performance
 content=reader.read_file()
 line_count, word_count, blank_line_count, character_count, for_loops_count, while_loops_count, if_statements_count, definition_function,functions_count , variables_count, variables, count_datatype, used_datatypes,count_return,return_list,Display_variables,variables_used,variables_unused,count_redeclared_variables,redeclared_variables,calls_function,calls_function_count,recursive_functions,recursive_functions_count,max_length,nested_list,cyclomatic_result,magic_number,long_function,global_variables,singlelines_comments,multilines_comments,total_comments,header_files,duplicate_list,score,rating,suggestion= analyzer.analyze_content(content)
+definition_function, function_count, nested_depth,cyclomatic_result, logorithmic_dic =performance.estimate_time_complexity(content)
 print("\n-----content of the file-----\n",content)
 print("\n--------Analysis report--------\n",)
 print("\n Total number of lines:   ", line_count)
@@ -43,5 +45,16 @@ print("\n code overall score :",score)
 print("\n rating of the code :", rating)
 print("\n  suggestion to improve code :",suggestion)
 
+print("\n*******time_complexity_analysis********\n")
+
+print("\n list of function definition ",definition_function)
+print("\n Total number of functions:",function_count)
+print("\n nested depth of the loop:",nested_depth)
+print("\n cyclomatic complexity:",cyclomatic_result)
+print("\n logorithmic complexity:",logorithmic_dic)
+
+
 print("\n-------------------------------\n")
+
+
 
