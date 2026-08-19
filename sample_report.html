@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Code Performance Report</title>
+<style>
+  :root { color-scheme: light; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #f4f5f7; color: #1e293b;
+         font-family: -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 32px 20px 64px; }
+  .code { font-family: "SF Mono", Consolas, "Roboto Mono", monospace; }
+  header { border-bottom: 3px solid #4f46e5; padding-bottom: 16px; margin-bottom: 28px; }
+  h1 { margin: 0 0 4px; font-size: 26px; letter-spacing: -0.02em; }
+  .sub { color: #64748b; font-size: 14px; }
+  h2 { font-size: 16px; text-transform: uppercase; letter-spacing: 0.08em;
+       color: #4f46e5; margin: 34px 0 14px; }
+  .verdict { display: flex; gap: 14px; flex-wrap: wrap; }
+  .vcard { flex: 1; min-width: 180px; background: #fff; border: 1px solid #e2e8f0;
+           border-radius: 14px; padding: 20px; }
+  .vcard .k { font-size: 12px; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; }
+  .vcard .v { font-size: 30px; font-weight: 700; margin-top: 6px; }
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .mcard { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px;
+           padding: 16px; text-align: center; }
+  .mval { font-size: 24px; font-weight: 700; }
+  .mlabel { font-size: 12px; color: #64748b; margin-top: 4px; }
+  table { width: 100%; border-collapse: collapse; background: #fff;
+          border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; }
+  th, td { text-align: left; padding: 12px 16px; border-bottom: 1px solid #eef2f6; font-size: 14px; }
+  th { background: #f8fafc; font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; }
+  tr:last-child td { border-bottom: none; }
+  .fn { font-family: "SF Mono", Consolas, monospace; font-weight: 600; }
+  .badge { color: #fff; padding: 3px 10px; border-radius: 999px; font-size: 13px;
+           font-family: "SF Mono", Consolas, monospace; }
+  .badge.soft { background: #eef2ff; color: #3730a3; }
+  ul.tips, ul.bn { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px;
+                   padding: 16px 16px 16px 34px; margin: 0; line-height: 1.7; }
+  ul.bn li { color: #7f1d1d; }
+  .foot { color: #94a3b8; font-size: 12px; margin-top: 40px; text-align: center; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Code Performance Report</h1>
+    <div class="sub code">Source: examples/messy_code.cpp</div>
+  </header>
+
+  <div class="verdict">
+    <div class="vcard"><div class="k">Quality Score</div>
+      <div class="v" style="color:#0e7490">88<span style="font-size:16px;color:#94a3b8">/100</span></div>
+      <div class="sub">Good</div></div>
+    <div class="vcard"><div class="k">Overall Time</div>
+      <div class="v code" style="color:#b91c1c">O(n^3)</div></div>
+    <div class="vcard"><div class="k">Overall Space</div>
+      <div class="v code" style="color:#3730a3">O(1)</div></div>
+  </div>
+
+  <h2>Key Metrics</h2>
+  <div class="grid"><div class='mcard'><div class='mval'>38</div><div class='mlabel'>Lines</div></div><div class='mcard'><div class='mval'>2</div><div class='mlabel'>Functions</div></div><div class='mcard'><div class='mval'>9</div><div class='mlabel'>Variables</div></div><div class='mcard'><div class='mval'>4</div><div class='mlabel'>For loops</div></div><div class='mcard'><div class='mval'>0</div><div class='mlabel'>While loops</div></div><div class='mcard'><div class='mval'>0</div><div class='mlabel'>If statements</div></div><div class='mcard'><div class='mval'>6</div><div class='mlabel'>Magic numbers</div></div><div class='mcard'><div class='mval'>1</div><div class='mlabel'>Duplicate lines</div></div></div>
+
+  <h2>Complexity by Function</h2>
+  <table>
+    <tr><th>Function</th><th>Time</th><th>Space</th></tr>
+    <tr><td class='fn'>calculate</td><td><span class='badge' style='background:#b91c1c'>O(n^3)</span></td><td><span class='badge soft'>O(1)</span></td></tr><tr><td class='fn'>main</td><td><span class='badge' style='background:#15803d'>O(1)</span></td><td><span class='badge soft'>O(1)</span></td></tr>
+  </table>
+
+  <h2>Performance Bottlenecks</h2>
+  <ul class="bn"><li><strong>calculate</strong> — slow time complexity O(n^3)</li></ul>
+
+  <h2>Optimization Suggestions</h2>
+  <ul class="tips"><li>Function &#x27;calculate&#x27; is O(n^3). Reduce the nested loops using hashing, sorting, or a smarter algorithm.</li><li>Remove duplicate code (1 repeated lines). Move repeated logic into a function.</li><li>Replace magic numbers [&#x27;50&#x27;, &#x27;7&#x27;, &#x27;3&#x27;, &#x27;15&#x27;, &#x27;2&#x27;, &#x27;100&#x27;] with named constants (use const).</li><li>Remove unused variables: unusedVar, discount.</li></ul>
+
+  <div class="foot">Generated by AI Code Performance Analyzer</div>
+</div>
+</body>
+</html>
