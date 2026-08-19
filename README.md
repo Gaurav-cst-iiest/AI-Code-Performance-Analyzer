@@ -1,236 +1,122 @@
-# 🚀 AI-Powered Code Performance Analysis and Optimization System
+# AI Code Performance Analyzer
 
-## 📖 Project Overview
+A tool that reads a **C++** source file and reports how well-written and how
+efficient it is — the quality score, time and space complexity, performance
+bottlenecks, and plain-English suggestions to make the code better.
 
-The AI-Powered Code Performance Analysis and Optimization System is designed to analyze source code, identify performance bottlenecks, detect code quality issues, and provide intelligent optimization suggestions using Artificial Intelligence.
-
-This project is being developed as part of my M.Tech learning journey to gain hands-on experience in software engineering, static code analysis, machine learning, and AI.
-
----
-
-## 🎯 Objectives
-
-- Analyze source code automatically.
-- Estimate time and space complexity.
-- Detect inefficient coding patterns.
-- Suggest optimized algorithms and data structures.
-- Generate detailed performance reports.
-- Learn optimization patterns using AI models.
+The whole analysis engine is written **from scratch in Python** (no parsing
+libraries), which makes it a great project for learning how compilers and
+static-analysis tools actually work.
 
 ---
 
-## ✨ Features
+## What it does
 
-### ✅ Implemented
+- **Code metrics** — lines, words, characters, comments, header files.
+- **Structure analysis** — functions, variables (used / unused / redeclared),
+  datatypes, return statements, function calls, and recursion.
+- **Code smells** — magic numbers, duplicate code, long functions, global
+  variables.
+- **Time complexity** — estimates Big-O per function (`O(1)`, `O(log n)`,
+  `O(n)`, `O(n log n)`, `O(n^2)`, `O(n^3)`, …) and the overall worst case.
+- **Space complexity** — estimates `O(1)`, `O(n)`, or `O(n^2)` from arrays,
+  vectors, 2D structures, and recursion.
+- **Bottleneck detection** — flags the slowest / most complex functions.
+- **Optimization suggestions** — specific, human-readable tips.
+- **Reports** — a clean HTML report you can download.
+- **Web interface** — a Streamlit app to upload or paste code and see results.
 
-Read C++ source files
-Tokenize source code
-Count total lines
-Count total words
-Count blank lines
-Count total characters
-Detect for loops
-Detect while loops
-Detect if statements
-Detect functions
-Detect variables
-Detect datatypes
-Detect return statements
-Detect used variables
-Detect unused variables
-Generate formatted analysis report
-
-### 🚧 Under Development
-
-Variable Redeclaration Detection
-Function Call Analysis
-Nested Loop Detection
-Time Complexity Estimation
-Space Complexity Estimation
-Code Smell Detection
-Performance Optimization Suggestions
-AI-based Recommendation Engine
-
-
-
-## 🛠️ Technology Stack
-
-### Currently Used
-
-- Python
-- Git
-- GitHub
-
-### Planned
-
-- FastAPI
-- Machine Learning
-- Large Language Models (LLMs)
-- HTML
-- CSS
-- JavaScript
-- React
-- SQLite / PostgreSQL
+> Note: **quality** (readability and code smells) and **performance**
+> (time/space complexity) are shown as two separate views. Clean code can
+> still be slow, and fast code can still be messy — the tool reports both.
 
 ---
 
-## 📂 Project Structure
+## How to run
 
-AI-Code-Performance-Analyzer/
-│
-├── data/
-├── docs/
-├── examples/
-├── models/
-├── reports/
-├── src/
-│   ├── main.py
-│   ├── reader.py
-│   └── analyzer.py
-├── tests/
-├── README.md
-├── requirements.txt
-└── LICENSE
+### 1. Install the requirements
 
----
-
-## 📊 Current Output
-```text
-
---------Analysis Report--------
-
-Total number of lines
-Total number of words
-Total number of blank lines
-Total number of characters
-
-Total number of for loops
-Total number of while loops
-Total number of if statements
-
-Total number of functions
-Total number of variables
-Total number of datatypes
-
-Total number of return statements
-
-List of variables
-
-List of used variables
-
-List of unused variables
-
--------------------------------
+```bash
+pip install -r requirements.txt
 ```
 
-## 🚧 Development Status
+### 2a. Run the web app (recommended for demos)
 
-Current Phase:
-**Basic Code Analyzer Development**
+```bash
+streamlit run app.py
+```
 
-Completed Modules:
+Then open the link it prints (usually http://localhost:8501). Pick a sample,
+upload a `.cpp` file, or paste code, and the results appear instantly.
 
-File Reader Module
+### 2b. Or run the command-line version
 
-Tokenizer Module
+```bash
+python main.py
+```
 
-Basic Code Metrics
-
-Loop Detection
-
-Function Detection
-
-Variable Detection
-
-Datatype Detection
-
-Return Statement Detection
-
-Used Variable Detection
-
-Unused Variable Detection
-
-Formatted Report Generator
-
-Next Phase:
-
-Variable Redeclaration Detection
-
-Function Call Detection
-
-Nested Loop Detection
-
-Time Complexity Estimation
-
-Space Complexity Estimation
-
-Optimization Suggestion Engine
+It will ask for a file name — for example `examples/sample.cpp`.
 
 ---
 
-## 👨‍💻 Developer
+## Project structure
 
-**Gaurav Kumar**
-
-M.Tech (Computer Science & Engineering)
-
-Indian Institute of Engineering Science and Technology (IIEST), Shibpur
-
----
-
-
-## 📅 Project Timeline
-Phase 1 – Project Setup ✅
-
-Phase 2 – File Reader ✅
-
-Phase 3 – Basic Metrics Analyzer ✅
-
-Phase 4 – Static Code Analyzer 🔄
-
-Phase 5 – Complexity Analyzer ⏳
-
-Phase 6 – Optimization Engine ⏳
-
-Phase 7 – AI Recommendation System ⏳
-
-Phase 8 – Web Dashboard ⏳
-
-Phase 9 – Deployment ⏳
+```
+reader.py         reads a C++ file (or accepts pasted code)
+analyzer.py       the core engine: metrics, smells, variables, functions
+performance.py    time complexity (Big-O) and space complexity
+report.py         combines everything, finds bottlenecks, writes tips + HTML
+app.py            the Streamlit web interface
+main.py           the command-line interface
+examples/         sample C++ files for testing and demos
+data/             C++ keyword reference data
+docs/             system design notes
+```
 
 ---
 
-## 📈 Development Progress
+## How complexity is estimated (in short)
 
-| Module                    | Status         |
-| ------------------------- | -------------- |
-| Project Setup             | ✅ Completed    |
-| File Reader               | ✅ Completed    |
-| Tokenizer                 | ✅ Completed    |
-| Code Metrics              | ✅ Completed    |
-| Loop Detection            | ✅ Completed    |
-| Function Detection        | ✅ Completed    |
-| Variable Detection        | ✅ Completed    |
-| Datatype Detection        | ✅ Completed    |
-| Return Detection          | ✅ Completed    |
-| Used Variable Detection   | ✅ Completed    |
-| Unused Variable Detection | ✅ Completed    |
-| Complexity Analysis       | 🔄 In Progress |
-| AI Recommendation Engine  | ⏳ Planned      |
-| Web Dashboard             | ⏳ Planned      |
+For each function the engine finds its body, then:
 
-The analyzer can currently identify:
+- **Time:** it counts how deeply `for` / `while` loops are nested. Depth 1 is
+  `O(n)`, depth 2 is `O(n^2)`, and so on. If a loop multiplies or divides its
+  counter (like `i *= 2`), that loop is `O(log n)`. Recursion is flagged for
+  manual review because it can be exponential.
+- **Space:** it looks for arrays, vectors, 2D structures, `new`, and recursion
+  (stack space).
 
-• Lines
-• Words
-• Blank Lines
-• Characters
-• for loops
-• while loops
-• if statements
-• Functions
-• Variables
-• Datatypes
-• Return Statements
-• Used Variables
-• Unused Variables
+This is a **heuristic estimate**, not a proof — it is meant to guide a
+developer, the same way a linter does.
+
+---
+
+## Sample files
+
+| File | What it shows |
+|------|----------------|
+| `clean_code.cpp` | Well-written `O(n)` code — high score |
+| `bubble_sort.cpp` | Nested loops → `O(n^2)` bottleneck |
+| `recursion.cpp` | Recursive functions flagged for review |
+| `matrix_multiply.cpp` | Triple loop → `O(n^3)` time, `O(n^2)` space |
+| `messy_code.cpp` | Magic numbers, duplicates, unused vars → many tips |
+| `sample.cpp` | A mix of logarithmic and linear loops |
+
+---
+
+## Limitations (honest notes)
+
+- Works best on clearly formatted C++ with braces on their own lines.
+- Complexity is estimated from loop structure, not a full parse, so unusual
+  code can be mis-estimated.
+- Recursion is flagged rather than solved exactly.
+
+## Future ideas
+
+- Real AI suggestions via a language-model API.
+- Support for more languages (C, Java).
+- Compare two files or track the score over time.
+
+---
+
+*Built by kumar. Licensed under the MIT License.*
